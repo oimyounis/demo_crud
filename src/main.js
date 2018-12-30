@@ -2,11 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
 import http from './http'
 
-Vue.config.productionTip = false;
+import VueLocalStorage from 'vue-localstorage'
 
+Vue.config.productionTip = false;
+Vue.use(VueLocalStorage);
 Vue.prototype.$http = http;
 
 new Vue({

@@ -45,7 +45,6 @@
       methods: {
           del(pk) {
               del(pk).then(res => {
-                  console.log(res);
                   loadEmployees();
               });
           }

@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 
-Vue.use(Router)
+import {isLoggedIn, logout} from "@/services/UserService";
+
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -22,19 +24,40 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
+        path: '/logout',
+        name: 'logout',
+        beforeEnter: (to, from, next) => {
+            logout();
+            next({name: 'home'})
+        }
+    },
+      {
+          path: '/login',
+          name: 'login',
+          component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
+      },
+    {
         path: '/users',
         name: 'users',
-        component: () => import(/* webpackChunkName: "about" */ './views/Users/List.vue')
+        component: () => import(/* webpackChunkName: "users-list" */ './views/Users/List.vue'),
+        beforeEnter: (to, from, next) => {
+            if (isLoggedIn()) {
+                next();
+            }
+            else {
+                next({name: 'login'})
+            }
+        }
     },
     {
         path: '/users/add',
         name: 'add-user',
-        component: () => import(/* webpackChunkName: "about" */ './views/Users/Add.vue')
+        component: () => import(/* webpackChunkName: "users-add" */ './views/Users/Add.vue')
     },
     {
         path: '/user/:pk',
         name: 'edit-user',
-        component: () => import(/* webpackChunkName: "about" */ './views/Users/Edit.vue')
+        component: () => import(/* webpackChunkName: "users-edit" */ './views/Users/Edit.vue')
     }
   ]
 })
