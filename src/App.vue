@@ -14,13 +14,13 @@
           <li class="nav-item">
             <router-link to="/about" class="nav-link">About</router-link>
           </li>
-          <li class="nav-item" v-if="isLoggedIn">
+          <li class="nav-item" v-if="isLoggedIn()">
             <router-link to="/users" class="nav-link">Users</router-link>
           </li>
         </ul>
 
-        <router-link class="btn btn-success" to="/login" v-if="!isLoggedIn">Login</router-link>
-        <router-link class="btn btn-danger" to="/logout" v-if="isLoggedIn">Logout</router-link>
+        <router-link class="btn btn-success" to="/login" v-if="!isLoggedIn()">Login</router-link>
+        <router-link class="btn btn-danger" to="/logout" v-if="isLoggedIn()">Logout</router-link>
         <!--<form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -34,14 +34,12 @@
 </template>
 
 <script>
-  export default {
-      computed: {
+    import {isLoggedIn} from "@/services/UserService";
+
+    export default {
+      methods: {
           isLoggedIn() {
-              return this.$localStorage.get('token');
-          }
-      },
-      watch: {
-          '$route' (to, from) {
+              return isLoggedIn();
           }
       }
   }

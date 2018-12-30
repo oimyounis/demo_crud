@@ -1,5 +1,6 @@
-import http from '@/http'
 import Vue from 'vue'
+import http from '@/http'
+import store from "@/store"
 
 export function login(username, password){
     return new Promise((resolve, reject) => {
@@ -17,9 +18,12 @@ export function login(username, password){
 }
 
 export function isLoggedIn() {
-    return Vue.localStorage.get('token');
+    if (Vue.localStorage.get('token') && !store.state.isLoggedIn) {
+        store.commit('login');
+    }
+    return store.state.isLoggedIn;
 }
 
 export function logout() {
-    Vue.localStorage.remove('token');
+    store.commit('logout');
 }
